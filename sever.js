@@ -12,31 +12,37 @@ const app = express();
 const server = http.createServer(app);
 
 const userRoutes = require("./routes/userRoute");
+const authRoutes = require("./routes/authRoute");
 const queueRoutes = require("./routes/questionRoute");
 const reviewRoutes = require("./routes/reviewRoute");
 
-// Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000,
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
 });
 app.use('/api', limiter);
 app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/questions", queueRoutes);
 app.use("/api/reviews", reviewRoutes);
+
 const PORT = process.env.PORT || 4004;
 
 sequelize.authenticate()
   .then(() => {
     console.log('Database connected successfully');
+    return sequelize.sync({ alter: false }); 
+  })
+  .then(() => {
+    console.log('Database tables synchronized');
     server.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   })
   .catch((err) => {
-    console.error('Unable to connect to database:', err);
+    console.error('Unable to connect or sync database:', err);
   });
 
 module.exports = { app, server };

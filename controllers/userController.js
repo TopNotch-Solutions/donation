@@ -4,7 +4,16 @@ const User = require("../models/user"); // Adjust path as needed
 exports.createUser = async (req, res) => {
     try {
         const newUser = await User.create(req.body);
-        res.status(201).json({ success: true, data: newUser });
+        
+        // Convert to JSON and remove password before sending response
+        const userResponse = newUser.toJSON();
+        delete userResponse.password;
+
+        res.status(201).json({ 
+            success: true, 
+            message: "User registered successfully",
+            data: userResponse 
+        });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
     }
