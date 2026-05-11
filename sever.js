@@ -8,12 +8,13 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const sequelize = require('./config/database');
 
-app.use(express.static("public"));
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
 
 const app = express();
 const server = http.createServer(app);
+app.use(express.static("public"));
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 const userRoutes = require("./routes/userRoute");
 const authRoutes = require("./routes/authRoute");
