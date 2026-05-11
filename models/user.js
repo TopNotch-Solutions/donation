@@ -47,6 +47,10 @@ const User = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false
         },
+        idNumber:{
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         occupation: {
             type: DataTypes.STRING,
             allowNull: false
