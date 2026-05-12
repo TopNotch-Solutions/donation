@@ -12,6 +12,8 @@ router.get("/submissions/count", ctrl.getTotalSubmissions);
 
 router.get("/user/:userId", ctrl.getUserQuestionnaires);
 
+router.get("/user/:userId/count", ctrl.getUserTotalSubmissions);
+
 router.get("/:id", ctrl.getQuestionnaireById);
 
 router.put("/:id/review", ctrl.reviewQuestionnaire);

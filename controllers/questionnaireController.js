@@ -154,6 +154,23 @@ exports.getTotalSubmissions = async (req, res) => {
   }
 };
 
+exports.getUserTotalSubmissions = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const total = await DonationQuestionnaire.count({ where: { userId } });
+
+    res.status(200).json({ success: true, data: { userId, totalDonations: total } });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 exports.getAllSubmissions = async (req, res) => {
   try {
     const questionnaires = await DonationQuestionnaire.findAll({
