@@ -7,8 +7,7 @@ const compression = require('compression');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const sequelize = require('./config/database');
-
-
+require('./models/associations');
 
 const app = express();
 const server = http.createServer(app);
@@ -18,8 +17,7 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 const userRoutes = require("./routes/userRoute");
 const authRoutes = require("./routes/authRoute");
-const queueRoutes = require("./routes/questionRoute");
-const reviewRoutes = require("./routes/reviewRoute");
+const questionnaireRoutes = require("./routes/questionnaireRoute");
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -30,8 +28,7 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/questions", queueRoutes);
-app.use("/api/reviews", reviewRoutes);
+app.use("/api/questionnaires", questionnaireRoutes);
 
 const PORT = process.env.PORT || 4004;
 
